@@ -1231,9 +1231,9 @@
   }
   .tool-selector {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
-    max-width: 760px;
+    max-width: 980px;
     justify-content: stretch;
   }
   .tool-card {
@@ -1448,6 +1448,133 @@
     font-family: 'Share Tech Mono', monospace;
   }
 
+  /* ═══ CREDITS ═══ */
+  .credits-card-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    border: 1px solid #686868;
+    border-radius: 50%;
+    color: #f5f5f5;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    line-height: 1;
+  }
+  .credits-wrapper {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 6.5rem 1.5rem 3rem;
+    position: relative;
+    z-index: 1;
+  }
+  .credits-panel {
+    overflow: hidden;
+    background: #111;
+    border: 1px solid #2d2d2d;
+    border-radius: 4px;
+    box-shadow: 0 14px 35px rgba(0,0,0,0.2);
+  }
+  .credits-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    background: #171717;
+    border-bottom: 1px solid #2d2d2d;
+  }
+  .credits-panel-title {
+    color: #f5f5f5;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .credits-panel-kicker {
+    color: #777;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .credits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .credit-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 250px;
+    padding: 1.25rem;
+    background: #0a0a0a;
+    border: 1px solid #303030;
+    border-radius: 4px;
+  }
+  .credit-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .credit-avatar {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border: 1px solid #777;
+    border-radius: 50%;
+    filter: grayscale(1);
+    background: #171717;
+  }
+  .credit-username {
+    color: #f5f5f5;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .credit-id {
+    margin-top: 0.25rem;
+    color: #777;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    overflow-wrap: anywhere;
+  }
+  .credit-role-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid #292929;
+  }
+  .credit-role-label,
+  .credit-contribution-label {
+    color: #777;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .credit-role {
+    padding: 0.35rem 0.6rem;
+    color: #f5f5f5;
+    border: 1px solid #666;
+    border-radius: 3px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .credit-contribution {
+    margin-top: -0.35rem;
+    color: #b1b1b1;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
   @media (max-width: 600px) {
     .top-bar { padding: 0 0.8rem; }
     .top-left { gap: 0.8rem; }
@@ -1460,6 +1587,8 @@
     .home-title { font-size: clamp(3.1rem, 18vw, 5.5rem); }
     .home-subtitle { font-size: clamp(2rem, 12vw, 4rem); }
     .top-hitters-section { margin-top: 2.4rem; }
+    .credits-grid { grid-template-columns: 1fr; }
+    .credits-panel-head { align-items: flex-start; flex-direction: column; }
   }
 </style>
 </head>
@@ -1572,6 +1701,13 @@
       </div>
       <div class="tool-name">GAG 2</div>
       <div class="tool-desc">Grow A Garden 2 Stealer with custom GUI options</div>
+    </div>
+    <div class="tool-card" onclick="switchToTool('credits')">
+      <div class="tool-icon">
+        <div class="credits-card-mark">✦</div>
+      </div>
+      <div class="tool-name">CREDITS</div>
+      <div class="tool-desc">Meet the people behind Statics Hub and see their roles</div>
     </div>
   </div>
 
@@ -1720,6 +1856,23 @@
       </div>
     </div>
   </div>
+
+  <!-- CREDITS -->
+  <div id="creditsContent" class="content-area">
+    <div class="credits-wrapper">
+      <header class="tool-header">
+        <h1>Credits</h1>
+        <p class="tagline">The people behind Statics Hub</p>
+      </header>
+      <section class="credits-panel">
+        <div class="credits-panel-head">
+          <span class="credits-panel-title">Statics Hub Team</span>
+          <span class="credits-panel-kicker">02 Contributors</span>
+        </div>
+        <div class="credits-grid" id="creditsGrid"></div>
+      </section>
+    </div>
+  </div>
 </div>
 
 <!-- ═══ LIVE CHAT ═══ -->
@@ -1766,6 +1919,21 @@ const ADMIN_MAP = {
   'visualcoder': { title: 'Owner',   color: '#f5f5f5' },
   'levraimlk':  { title: 'Developer', color: '#f5f5f5' }
 };
+
+const CREDIT_TEAM = [
+  {
+    id: '1350114888940523635',
+    username: 'Bythbzen',
+    role: 'Founder',
+    contribution: 'Founded Statics Hub and shaped the project direction.'
+  },
+  {
+    id: '730782816513556560',
+    username: 'levraimlk',
+    role: 'Owner / Developer',
+    contribution: 'Owns the project and leads its development and implementation.'
+  }
+];
 
 const SKRINHUB_API = 'https://c58175c8-ffbe-4518-9a89-8456b2c912f0-00-3jhjthxjlcyh1.sisko.replit.dev';
 
@@ -1837,6 +2005,54 @@ function renderTopHitters() {
       <div class="hitter-count-label">scripts executed</div>
     </div>
   `).join('');
+}
+
+function getDefaultDiscordAvatar(id) {
+  try {
+    const avatarIndex = Number((BigInt(id) >> 22n) % 6n);
+    return `https://cdn.discordapp.com/embed/avatars/${avatarIndex}.png`;
+  } catch {
+    return 'https://cdn.discordapp.com/embed/avatars/0.png';
+  }
+}
+
+function getCreditAvatar(member) {
+  const knownUser = getKnownUsers().find(user => String(user.id) === member.id);
+  if (knownUser?.avatar) return knownUser.avatar;
+  if (currentUser && String(currentUser.id) === member.id && currentUser.avatar) {
+    return currentUser.avatar;
+  }
+  return getDefaultDiscordAvatar(member.id);
+}
+
+function renderCredits() {
+  const container = document.getElementById('creditsGrid');
+  if (!container) return;
+
+  container.innerHTML = CREDIT_TEAM.map(member => {
+    const fallback = getDefaultDiscordAvatar(member.id);
+    const avatar = getCreditAvatar(member);
+    return `
+      <article class="credit-card">
+        <div class="credit-card-top">
+          <img class="credit-avatar" src="${escHtml(avatar)}" alt="${escHtml(member.username)} profile picture"
+            onerror="this.onerror=null;this.src='${fallback}'">
+          <div>
+            <div class="credit-username">${escHtml(member.username)}</div>
+            <div class="credit-id">Discord ID: ${escHtml(member.id)}</div>
+          </div>
+        </div>
+        <div class="credit-role-row">
+          <span class="credit-role-label">Role</span>
+          <span class="credit-role">${escHtml(member.role)}</span>
+        </div>
+        <div>
+          <div class="credit-contribution-label">Contribution</div>
+          <p class="credit-contribution">${escHtml(member.contribution)}</p>
+        </div>
+      </article>
+    `;
+  }).join('');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1944,6 +2160,7 @@ function setCurrentUser(user) {
   // Update chat input
   document.getElementById('chatInputArea').style.display = 'flex';
   document.getElementById('chatLoginPrompt').style.display = 'none';
+  renderCredits();
 }
 
 function applyUserRoleBadge(username) {
@@ -2264,11 +2481,15 @@ function switchToTool(tool) {
   document.getElementById('backButton').style.display = 'flex';
   document.getElementById('brainrotContent').classList.remove('active');
   document.getElementById('gag2Content').classList.remove('active');
+  document.getElementById('creditsContent').classList.remove('active');
   if (tool === 'brainrot') {
     document.getElementById('brainrotContent').classList.add('active');
     renderList();
-  } else {
+  } else if (tool === 'gag2') {
     document.getElementById('gag2Content').classList.add('active');
+  } else {
+    document.getElementById('creditsContent').classList.add('active');
+    renderCredits();
   }
 }
 function backToHome() {
@@ -2277,6 +2498,7 @@ function backToHome() {
   document.getElementById('backButton').style.display = 'none';
   document.getElementById('brainrotContent').classList.remove('active');
   document.getElementById('gag2Content').classList.remove('active');
+  document.getElementById('creditsContent').classList.remove('active');
   renderTopHitters();
 }
 
@@ -2775,6 +2997,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   renderList();
   renderChat();
   renderTopHitters();
+  renderCredits();
 });
 </script>
 </body>
