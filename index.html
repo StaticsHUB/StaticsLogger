@@ -13,7 +13,7 @@
   ║  4. Copy Client ID and paste it below                   ║
   ╚══════════════════════════════════════════════════════════╝
 -->
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Share+Tech+Mono&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -32,7 +32,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -1422,6 +1422,32 @@
   .toast.success, .toast.error { color: #f5f5f5; border-color: #777; }
   .gag2-code-block { color: #f5f5f5; }
 
+  /* Readable UI type; generated script output stays monospace. */
+  body, button, input, textarea, select,
+  .counter-widget, .user-name, .user-role-badge, .btn-logout, .btn-admin,
+  .modal-box p, .btn-cancel, .admin-tab, .role-name-input, .btn-add-role,
+  .role-row-name, .btn-del-role, .admin-section-title, .user-rank-name,
+  .role-select, .btn-assign-role, .admin-empty, .tool-desc, .tool-header .tagline,
+  .ph-title, .lbl, .a-meta, .sel-count, .txt, .hint, .out-ph-title, .btn-copy,
+  .admin-mode-btn, .gag2-ph-title, .gag2-lbl, .gag2-f-input, .gag2-f-hint,
+  .gag2-admin-mode-btn, .gag2-btn-copy, .suggestion-id {
+    font-family: 'DM Sans', sans-serif;
+  }
+  .code-block, .gag2-code-block {
+    font-family: 'Share Tech Mono', monospace;
+  }
+  body [class] {
+    font-family: 'DM Sans', sans-serif;
+  }
+  body .brand-mini, body .home-title, body .home-subtitle,
+  body .tool-name, body .top-hitters-title, body .chat-header-title,
+  body .modal-box h2, body .admin-header h2, body .server-gate-box h2 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  body .code-block, body .gag2-code-block {
+    font-family: 'Share Tech Mono', monospace;
+  }
+
   @media (max-width: 600px) {
     .top-bar { padding: 0 0.8rem; }
     .top-left { gap: 0.8rem; }
@@ -1491,7 +1517,6 @@
         <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.114 18.1.13 18.113a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
         Sign in with Discord
       </button>
-      <button class="btn-cancel" onclick="closeModal('loginModal')">Cancel</button>
     </div>
   </div>
 </div>
@@ -1756,6 +1781,7 @@ let gag2CustomAdminLoadstring = '';
 let chatOpen = false;
 let chatUnreadCount = 0;
 let currentUser = null;
+let membershipGateOpen = false;
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  SCRIPTS COUNTER
@@ -1875,10 +1901,18 @@ async function handleDiscordCallback() {
 }
 
 function showServerGate() {
+  membershipGateOpen = true;
+  document.getElementById('loginModal').classList.add('hidden');
   document.getElementById('serverGateModal').classList.remove('hidden');
 }
 
+function showLoginGate() {
+  if (currentUser || membershipGateOpen) return;
+  document.getElementById('loginModal').classList.remove('hidden');
+}
+
 function loadStoredUser() {
+  if (membershipGateOpen) return;
   const stored = localStorage.getItem('statics_hub_discord_user');
   if (stored) {
     try { setCurrentUser(JSON.parse(stored)); } catch {}
@@ -1887,6 +1921,9 @@ function loadStoredUser() {
 
 function setCurrentUser(user) {
   currentUser = user;
+  membershipGateOpen = false;
+  document.getElementById('loginModal').classList.add('hidden');
+  document.getElementById('serverGateModal').classList.add('hidden');
   // Update top bar
   const chip = document.getElementById('userChip');
   chip.classList.add('show');
@@ -1947,6 +1984,7 @@ function logout() {
   document.getElementById('adminOpenBtn').classList.remove('show');
   document.getElementById('chatInputArea').style.display = 'none';
   document.getElementById('chatLoginPrompt').style.display = 'block';
+  showLoginGate();
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2071,7 +2109,7 @@ function renderUsers() {
       <img class="user-rank-avatar" src="${user.avatar}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot;><circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;12&quot; fill=&quot;%231a0000&quot;/></svg>'">
       <span class="user-rank-name">${escHtml(user.global_name || user.username)}<br><span style="font-size:0.62rem;color:var(--muted)">@${escHtml(user.username)}</span></span>
       ${adminBadge}
-      ${!adminEntry ? selectHtml : '<span style="font-family:Share Tech Mono,monospace;font-size:0.65rem;color:var(--muted)">Built-in admin</span>'}
+      ${!adminEntry ? selectHtml : '<span style="font-family:DM Sans,sans-serif;font-size:0.65rem;color:var(--muted)">Built-in admin</span>'}
       ${!adminEntry ? `<button class="btn-assign-role" onclick="assignRole('${user.username}', '${user.id}')">Assign</button>` : ''}
     `;
     container.appendChild(row);
@@ -2205,9 +2243,15 @@ window.addEventListener('storage', e => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //  MODALS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+function closeModal(id) {
+  if (id === 'loginModal' && !currentUser) return;
+  document.getElementById(id).classList.add('hidden');
+}
 document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.add('hidden'); });
+  el.addEventListener('click', e => {
+    if (e.target !== el || el.id === 'loginModal' || el.id === 'serverGateModal') return;
+    el.classList.add('hidden');
+  });
 });
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2717,6 +2761,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   initCounter();
   await handleDiscordCallback(); // check for OAuth2 redirect
   loadStoredUser();
+  if (!currentUser && document.getElementById('serverGateModal').classList.contains('hidden')) {
+    showLoginGate();
+  }
   renderList();
   renderChat();
   renderTopHitters();
